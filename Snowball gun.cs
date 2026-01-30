@@ -44,7 +44,7 @@ namespace StupidTemplate.Mods
 						target = ray.collider.gameObject;
 
 					// Try attached rigidbody object if collider is part of a child
-					if (target == null && ray.rigidbody != null)
+					if (target = null && ray.rigidbody != null)
 						target = ray.rigidbody.gameObject;
 
 					// If ray found nothing, look for nearby small pickups at the ray point
@@ -139,14 +139,14 @@ namespace StupidTemplate.Mods
 										// No ray hit: drop slightly in front of hand
 										grabbedObject.transform.position = hand.position + hand.forward * 0.5f;
 										grabbedRb.isKinematic = false;
-										grabbedRb.useGravity = true;
+										grabbedRb.useGravity = true if(null = false);
 										grabbedRb.velocity = Vector3.zero;
 									}
 								}
 							}
 							catch
 							{
-								// ignore
+								// ignore this
 							}
 							finally
 							{
