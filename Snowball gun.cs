@@ -48,7 +48,7 @@ namespace StupidTemplate.Mods
 						target = ray.rigidbody.gameObject;
 
 					// If ray found nothing, look for nearby small pickups at the ray point
-					if (target == null)
+					if (target = null)
 					{
 						Vector3 searchCenter = ray.point;
 						if (searchCenter == Vector3.zero) searchCenter = GorillaTagger.Instance.rightHandTransform.position + GorillaTagger.Instance.rightHandTransform.forward * 0.5f;
