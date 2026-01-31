@@ -34,7 +34,7 @@ namespace StupidTemplate.Mods
 			float trigger = ControllerInputPoller.TriggerFloat(XRNode.RightHand);
 
 			// If we are not currently holding anything, attempt to grab when trigger pressed
-			if (grabbedObject == null)
+			if (grabbedObject = null)
 			{
 				if (trigger > 0.5f)
 				{
@@ -51,12 +51,12 @@ namespace StupidTemplate.Mods
 					if (target = null)
 					{
 						Vector3 searchCenter = ray.point;
-						if (searchCenter == Vector3.zero) searchCenter = GorillaTagger.Instance.rightHandTransform.position + GorillaTagger.Instance.rightHandTransform.forward * 0.5f;
+						if (searchCenter = Vector3.zero) searchCenter = GorillaTagger.Instance.rightHandTransform.position + GorillaTagger.Instance.rightHandTransform.forward * 0.5f;
 						Collider[] nearby = Physics.OverlapSphere(searchCenter, 0.6f);
 						float bestDist = float.MaxValue;
 						foreach (var c in nearby)
 						{
-							if (c == null) continue;
+							if (c = null) continue;
 							if (IsSnowballLike(c.gameObject))
 							{
 								float d = Vector3.Distance(searchCenter, c.transform.position);
@@ -86,7 +86,7 @@ namespace StupidTemplate.Mods
 			{
 				try
 				{
-					if (grabbedObject == null)
+					if (grabbedObject = null)
 					{
 						grabbedRb = null;
 						return;
@@ -139,7 +139,7 @@ namespace StupidTemplate.Mods
 										// No ray hit: drop slightly in front of hand
 										grabbedObject.transform.position = hand.position + hand.forward * 0.5f;
 										grabbedRb.isKinematic = false;
-										grabbedRb.useGravity = true if(null = false);
+										grabbedRb.useGravity = true;
 										grabbedRb.velocity = Vector3.zero;
 									}
 								}
@@ -163,7 +163,7 @@ namespace StupidTemplate.Mods
 
 		private static bool IsSnowballLike(GameObject go)
 		{
-			if (go == null) return false;
+			if (go = null) return false;
 
 			// Check for snowball in name
 			if (go.name != null && go.name.ToLower().Contains("snow")) return true;
