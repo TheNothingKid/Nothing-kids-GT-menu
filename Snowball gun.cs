@@ -19,6 +19,11 @@ namespace StupidTemplate.Mods
 
         private static bool previousTrigger;
 
+        // Patch notify system
+        private static bool patchNotifyActive = false;
+        private static float patchNotifyDuration = 3f;
+        private static float patchNotifyTimer = 0f;
+
         // Call this in the menu execution loop (toggable button)
         [System.Obsolete]
         public static void SnowballGrab()
@@ -77,6 +82,7 @@ namespace StupidTemplate.Mods
                         {
                             grabbedRb.isKinematic = true;
                             grabbedRb.useGravity = false;
+                            NotifyPatchEvent("Snowball Grabbed", "Patch: Object locked");
                         }
                     }
                 }
@@ -107,6 +113,7 @@ namespace StupidTemplate.Mods
                             grabbedRb.useGravity = true;
                             grabbedRb.velocity = Vector3.zero;
                             grabbedRb.AddForce(hand.forward * throwStrength, ForceMode.VelocityChange);
+                            NotifyPatchEvent("Snowball Thrown", "Patch: Physics applied");
                         }
 
                         grabbedObject = null;
@@ -132,6 +139,7 @@ namespace StupidTemplate.Mods
                                         grabbedRb.isKinematic = false;
                                         grabbedRb.useGravity = true;
                                         grabbedRb.velocity = Vector3.zero;
+                                        NotifyPatchEvent("Snowball Released", "Patch: Dropped at raypoint");
                                     }
                                     else
                                     {
@@ -140,12 +148,13 @@ namespace StupidTemplate.Mods
                                         grabbedRb.isKinematic = false;
                                         grabbedRb.useGravity = true;
                                         grabbedRb.velocity = Vector3.zero;
+                                        NotifyPatchEvent("Snowball Released", "Patch: Dropped in front");
                                     }
                                 }
                             }
                             catch
                             {
-                                // ignore this
+                                NotifyPatchEvent("Snowball Error", "Patch: Exception handled");
                             }
                             finally
                             {
@@ -158,6 +167,7 @@ namespace StupidTemplate.Mods
             }
 
             previousTrigger = trigger > 0.5f;
+            UpdatePatchNotify();
         }
 
         private static bool IsSnowballLike(GameObject go)
@@ -178,6 +188,60 @@ namespace StupidTemplate.Mods
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Sends a patch notification to the player
+        /// </summary>
+        private static void NotifyPatchEvent(string title, string message)
+        {
+            try
+            {
+                if (GorillaGameManager.instance != null)
+                {
+                    GorillaGameManager.instance.ShowNotification(title, message);
+                }
+
+                patchNotifyActive = true;
+                patchNotifyTimer = patchNotifyDuration;
+
+                Debug.Log($"[SnowballGun Patch] {title}: {message}");
+            }
+            catch
+            {
+                Debug.LogWarning("[SnowballGun Patch] Notification system unavailable");
+            }
+        }
+
+        /// <summary>
+        /// Updates the patch notify system timer
+        /// </summary>
+        private static void UpdatePatchNotify()
+        {
+            if (patchNotifyActive)
+            {
+                patchNotifyTimer -= Time.deltaTime;
+                if (patchNotifyTimer <= 0f)
+                {
+                    patchNotifyActive = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Checks if patch notify system is currently active
+        /// </summary>
+        public static bool IsPatchNotifyActive()
+        {
+            return patchNotifyActive;
+        }
+
+        /// <summary>
+        /// Manually trigger a patch notification
+        /// </summary>
+        public static void TriggerPatchNotify(string title, string message)
+        {
+            NotifyPatchEvent(title, message);
         }
     }
 }
